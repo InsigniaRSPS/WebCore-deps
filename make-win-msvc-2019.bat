@@ -13,6 +13,15 @@ SET SRC_DIR=%RETVAL%
 
 SET ICU_DIR=src\icu4c-67_1-src\icu
 
+if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" (
+    set "VCVARS=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+) else (
+    set "VCVARS=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"
+)
+
+CALL MSBuild.exe "%ICU_DIR%\source\common\common.vcxproj" /t:Build /p:Configuration=Release
+CALL MSBuild.exe "%ICU_DIR%\source\i18n\i18n.vcxproj" /t:Build /p:Configuration=Release
+
 IF NOT EXIST "%ICU_DIR%\lib64\icuuc.lib" CALL :EXIT_NO_ICU
 IF NOT EXIST "%ICU_DIR%\lib64\icuin.lib" CALL :EXIT_NO_ICU
 
@@ -22,10 +31,8 @@ XCOPY /Q /Y "%ICU_DIR%\lib64\icuin.lib" "%CMAKE_INSTALL_PREFIX%\lib\"
 XCOPY /E /Q /Y "src\icu-data" "%CMAKE_INSTALL_PREFIX%\bin\"
 XCOPY /E /Q /Y "%ICU_DIR%\include" "%CMAKE_INSTALL_PREFIX%\include\"
 
-CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
-
 SET CMAKE_BUILD_TYPE=MinSizeRel
-SET CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+SET CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
 set PLATFORM_DEFINES_HEADER="%SRC_DIR%\WinPlatformDefines.h"
 set MSVC_FLAGS="/Zc:inline /DWINDOWS_DESKTOP_PLATFORM=1 /FI %PLATFORM_DEFINES_HEADER%"
 SET "CMAKE_FLAGS=-DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_MSVC_RUNTIME_LIBRARY=%CMAKE_MSVC_RUNTIME_LIBRARY% -DCMAKE_INSTALL_PREFIX=%CMAKE_INSTALL_PREFIX% -DCMAKE_CXX_FLAGS=%MSVC_FLAGS% -DCMAKE_C_FLAGS=%MSVC_FLAGS%"
