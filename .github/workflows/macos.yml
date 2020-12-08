@@ -1,0 +1,22 @@
+name: macOS Build
+
+on: [ push ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: brew install ninja
+
+      - name: Build WebKitLibraries
+        run: ./make-unix-clang.sh
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: webkitlibraries
+          path: build-unix-clang/

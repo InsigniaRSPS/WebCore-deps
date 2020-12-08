@@ -1,0 +1,22 @@
+name: Windows Build
+
+on: [ push ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: choco install ninja
+
+      - name: Build WebKitLibraries
+        run: ./make-win-msvc-2019.bat
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: webkitlibraries
+          path: build-win-msvc-2019/

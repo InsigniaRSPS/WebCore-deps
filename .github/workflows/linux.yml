@@ -1,0 +1,22 @@
+name: Linux Build
+
+on: [ push ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: sudo apt update && sudo apt install ninja-build
+
+      - name: Build WebKitLibraries
+        run: ./make-unix-clang.sh
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: webkitlibraries
+          path: build-unix-clang/
