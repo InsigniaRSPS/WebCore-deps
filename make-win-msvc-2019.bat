@@ -19,7 +19,7 @@ if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxi
     set "VCVARS=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"
 )
 
-call "%VCVARS% amd64"
+call "%VCVARS%" amd64
 
 CALL MSBuild.exe "%ICU_DIR%\source\common\common.vcxproj" /t:Build /p:Configuration=Release
 CALL MSBuild.exe "%ICU_DIR%\source\i18n\i18n.vcxproj" /t:Build /p:Configuration=Release
