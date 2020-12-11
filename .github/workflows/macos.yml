@@ -20,3 +20,4 @@ jobs:
         with:
           name: webkitlibraries
           path: build-unix-clang/
+          if-no-files-found: error

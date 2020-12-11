@@ -20,3 +20,4 @@ jobs:
         with:
           name: webkitlibraries
           path: build-win-msvc-2019/
+          if-no-files-found: error
